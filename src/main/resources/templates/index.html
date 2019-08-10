@@ -31,11 +31,12 @@
                 <div class="row">
                     <div class="col">
                         <select class="form-control" aria-label="Small" name="nights">
-                            <option th:each="continent : ${continents}"
-                                    th:disabled="${continent.getName().concat('con_')}"
-                                    th:value="${continent.getName().replace('con_', '')}"
-                                    th:utext="${continent.getName().replace('con_', '')}">
-                            </option>
+                            <optgroup th:label="${continent.getName()}" th:each="continent : ${continents}">
+                                <option th:each="country : ${trip.getCountryByContinent(continent.getIdContinent())}"
+                                        th:value="${country.getName()}"
+                                        th:utext="${country.getName()}">
+                                </option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="col">
@@ -46,17 +47,15 @@
                     </div>
                     <div class="col">
                         <select class="form-control" aria-label="Small" name="nights">
-
                             <option th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"
-                                    th:disabled="${nights.getDuration() < 10}"
                                     th:value="${nights.getDuration()}"
                                     th:utext="${nights.getName()}">
                             </option>
-                            <option class="bg-dark text-light" th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"
-                                    th:disabled="disabled"
-                                    th:value="${nights.getDuration()}"
-                                    th:utext="${nights.getName().toUpperCase()}">
-                            </option>
+<!--                            <option class="bg-dark text-light" th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"-->
+<!--                                     th:disabled="${nights.getDuration() < 10}"-->
+<!--                                    th:value="${nights.getDuration()}"-->
+<!--                                    th:utext="${nights.getName().toUpperCase()}">-->
+<!--                            </option>-->
                         </select>
                     </div>
                     <div class="col">
@@ -64,6 +63,7 @@
                     </div>
                 </div>
 
+                <br />
                 <div class="row">
                     <div class="col">
                         <button class="btn btn-success" type="submit">Submit</button>

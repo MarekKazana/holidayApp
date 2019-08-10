@@ -16,13 +16,9 @@ public class ContinentController {
     @Autowired
     private ContinentService continentService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getAllContinents() {
-        ModelAndView modelAndView = new ModelAndView();
+    public List<Continent> getAllContinents() {
         List<Continent> continents = continentService.findAll();
-        modelAndView.addObject("continents", setContinentsPrefix(continents));
-        modelAndView.setViewName("index");
-        return modelAndView;
+        return continents;
     }
 
     private List<Continent> setContinentsPrefix(List<Continent> continents) {

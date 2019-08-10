@@ -9,7 +9,10 @@
         <div th:replace="fragments/header :: header"></div>
 
         <div class="container">
-            Hello <div class="custom-control-inline" th:utext="${name + '!!!'}"></div><br />
+            Hello <div class="custom-control-inline" th:text="${name + '!!!'}"></div><br />
+            <div class="custom-control-inline">
+                <label>Nights duration:</label> &nbsp; <div th:text="${nights}"></div>
+            </div>
         </div>
         <div th:replace="fragments/footer :: footer"></div>
     </body>

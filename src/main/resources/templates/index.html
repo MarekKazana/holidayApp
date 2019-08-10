@@ -8,14 +8,74 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <p>
         <div class="container">
+            <form class="" th:action="@{'/test1'}" method="get">
+                <div class="row">
+                    <div class="col">
+                        <label>From:</label>
+                    </div>
+                    <div class="col">
+                        <label>Destination:</label>
+                    </div>
+                    <div class="col">
+                        <label>Depart date:</label>
+                    </div>
+                    <div class="col">
+                        <label>Nights:</label>
+                    </div>
+                    <div class="col">
+                        <label></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <select class="form-control" aria-label="Small" name="nights">
+                            <option th:each="continent : ${continents}"
+                                    th:disabled="${continent.getName().concat('con_')}"
+                                    th:value="${continent.getName().replace('con_', '')}"
+                                    th:utext="${continent.getName().replace('con_', '')}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" aria-label="Small">
+                    </div>
+                    <div class="col">
+                        <input type="date" class="form-control" aria-label="Small">
+                    </div>
+                    <div class="col">
+                        <select class="form-control" aria-label="Small" name="nights">
+
+                            <option th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"
+                                    th:disabled="${nights.getDuration() < 10}"
+                                    th:value="${nights.getDuration()}"
+                                    th:utext="${nights.getName()}">
+                            </option>
+                            <option class="bg-dark text-light" th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"
+                                    th:disabled="disabled"
+                                    th:value="${nights.getDuration()}"
+                                    th:utext="${nights.getName().toUpperCase()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-success" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
 
             City controller tests: <br />
             <a th:href="@{'/test1'}">Test 1</a><br />
             <a th:href="@{'/test2/Matt'}">Test 2</a>
         </div>
-    </p>
+        <br />
 
     <div th:replace="fragments/footer :: footer"></div>
 </body>

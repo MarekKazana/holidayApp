@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <title>Holiday App - trip details</title>
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"></div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4 class="d-flex justify-content-center font-weight-bold"><u>Your trip details:</u></h4><br />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Destination country: <label th:utext="${tripFormController.getCountry(destinationCountry).getName()}"></label><br />
+                </div>
+                <div class="col">
+                    From date: <label th:utext="${fromDate}"></label>
+                </div>
+                <div class="col">
+                    to date: <label th:utext="${toDate}"></label>
+                </div>
+                <div class="col">
+                    Nights: <label th:utext="${nights}"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-3">
+                    <label>Select city you will fly from: </label>
+                </div>
+                <div class="col col-3">
+                    <select class="form-control" aria-label="Small" name="fromCity">
+                        <option th:each="city : ${tripFormController.getCitiesFromCountry(fromCountry)}"
+                        th:value="${city.getName()}"
+                        th:utext="${city.getName()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-3">
+                    <label>Select destination city: </label>
+                </div>
+                <div class="col col-3">
+                    <select class="form-control" aria-label="Small" name="destinationCity">
+                        <option th:each="city : ${tripFormController.getCitiesFromCountry(destinationCountry)}"
+                                th:value="${city.getName()}"
+                                th:utext="${city.getName()}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div th:replace="fragments/footer :: footer"></div>
+
+    </body>
+</html>

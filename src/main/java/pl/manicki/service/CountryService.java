@@ -19,4 +19,8 @@ public class CountryService {
     public List<Country> getCountryByContinent(Long idContinent) {
         return countryRepository.findCountriesByContinentIdContinent(idContinent);
     }
+
+    public Country getCountry(Long idCountry) {
+        return countryRepository.findById(idCountry).get();
+    }
 }

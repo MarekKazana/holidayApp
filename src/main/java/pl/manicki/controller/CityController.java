@@ -18,8 +18,8 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
-    public List<City> getAllCities() {
-        return cityService.findAll();
+    public List<City> getCitiesFromCountry(Long idCountry) {
+        return cityService.getCitiesFromCountry(idCountry);
     }
 
     @RequestMapping(value = "/test1", method = RequestMethod.GET)

@@ -9,41 +9,60 @@
     <div th:replace="fragments/header :: header"></div>
 
         <div class="container">
-            <form class="" th:action="@{'/test1'}" method="get">
+            <form class="" th:action="@{'/setTripDetails'}" method="get">
                 <div class="row">
                     <div class="col">
-                        <label>From:</label>
+                        <label>From location:</label>
                     </div>
                     <div class="col">
                         <label>Destination:</label>
                     </div>
                     <div class="col">
-                        <label>Depart date:</label>
+                        <label>From date:</label>
+                    </div>
+                    <div class="col">
+                        <label>To date:</label>
                     </div>
                     <div class="col">
                         <label>Nights:</label>
-                    </div>
-                    <div class="col">
-                        <label></label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <select class="form-control" aria-label="Small" name="nights">
+                        <select class="form-control" aria-label="Small" name="fromCountry" id="countryId" onchange="template()">
                             <optgroup th:label="${continent.getName()}" th:each="continent : ${continents}">
-                                <option th:each="country : ${trip.getCountryByContinent(continent.getIdContinent())}"
-                                        th:value="${country.getName()}"
+                                <option th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}"
+                                        th:value="${country.getIdCountry()}"
+                                        th:utext="${country.getName()}">
+                                </option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <script>
+                        function template_() {
+                            var e = document.getElementById("countryId");
+                            var value = e.options[e.selectedIndex].value;
+                            alert(value);
+                        }
+                    </script>
+
+                    <div class="col">
+                        <select class="form-control" aria-label="Small" name="destinationCountry">
+                            <optgroup th:label="${continent.getName()}" th:each="continent : ${continents}">
+                                <option th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}"
+                                        th:value="${country.getIdCountry()}"
                                         th:utext="${country.getName()}">
                                 </option>
                             </optgroup>
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" aria-label="Small">
+                        <input type="date" class="form-control" aria-label="Small" name="fromDate">
                     </div>
                     <div class="col">
-                        <input type="date" class="form-control" aria-label="Small">
+                        <input type="date" class="form-control" aria-label="Small" name="toDate">
                     </div>
                     <div class="col">
                         <select class="form-control" aria-label="Small" name="nights">
@@ -57,9 +76,6 @@
 <!--                                    th:utext="${nights.getName().toUpperCase()}">-->
 <!--                            </option>-->
                         </select>
-                    </div>
-                    <div class="col">
-                        <label></label>
                     </div>
                 </div>
 

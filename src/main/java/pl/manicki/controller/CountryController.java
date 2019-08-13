@@ -16,4 +16,8 @@ public class CountryController {
     public List<Country> getCountryByContinent(Long idContinent) {
         return countryService.getCountryByContinent(idContinent);
     }
+
+    public Country getCountry(Long idCountry) {
+        return countryService.getCountry(idCountry);
+    }
 }

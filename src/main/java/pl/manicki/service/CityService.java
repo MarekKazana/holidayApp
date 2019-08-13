@@ -12,7 +12,7 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
-    public List<City> findAll() {
-        return cityRepository.findAll();
+    public List<City> getCitiesFromCountry(Long idCountry) {
+        return cityRepository.findAllByCountry_IdCountry(idCountry);
     }
 }

@@ -16,9 +16,16 @@ public class Hotel {
     @Column(name = "rating")
     private float rating;
 
+    @Column(name = "address")
+    private String address;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_city")
     private City city;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_airport")
+    private Airport airport;
 
     public Long getIdHotel() {
         return idHotel;
@@ -44,11 +51,27 @@ public class Hotel {
         this.rating = rating;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public City getCity() {
         return city;
     }
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public Airport getAirport() {
+        return airport;
+    }
+
+    public void setAirport(Airport airport) {
+        this.airport = airport;
     }
 }

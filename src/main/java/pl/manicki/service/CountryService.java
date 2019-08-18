@@ -12,15 +12,11 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public List<Country> findAll() {
-        return countryRepository.findAll();
-    }
-
     public List<Country> getCountryByContinent(Long idContinent) {
         return countryRepository.findCountriesByContinentIdContinent(idContinent);
     }
 
     public Country getCountry(Long idCountry) {
-        return countryRepository.findById(idCountry).get();
+        return countryRepository.findById(idCountry).isPresent() ? countryRepository.findById(idCountry).get() : null;
     }
 }

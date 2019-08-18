@@ -14,14 +14,6 @@ public class ContinentController {
     private ContinentService continentService;
 
     public List<Continent> getAllContinents() {
-        List<Continent> continents = continentService.findAll();
-        return continents;
-    }
-
-    private List<Continent> setContinentsPrefix(List<Continent> continents) {
-        for(Continent continent : continents) {
-            continent.setName("con_" + continent.getName());
-        }
-        return continents;
+        return continentService.findAll();
     }
 }

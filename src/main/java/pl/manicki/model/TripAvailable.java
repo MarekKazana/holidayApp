@@ -8,4 +8,7 @@ public class TripAvailable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTripAvailable;
+
+//    @Column
+
 }

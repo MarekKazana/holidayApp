@@ -3,11 +3,12 @@
     <head>
         <meta charset="UTF-8">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <title>Holiday App - trip details</title>
+        <title>Holidays application - trip details</title>
     </head>
     <body>
         <div th:replace="fragments/header :: header"></div>
 
+        <form th:action="@{'/findTrip'}" method="post">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -17,6 +18,7 @@
             <div class="row">
                 <div class="col">
                     Destination country: <label th:utext="${tripFormController.getCountry(destinationCountry).getName()}"></label><br />
+                    <input th:name="destinationCountry" th:value="${destinationCountry}" hidden>
                 </div>
                 <div class="col">
                     From date: <label th:utext="${fromDate}"></label>
@@ -33,29 +35,47 @@
                     <label>Select city you will fly from: </label>
                 </div>
                 <div class="col col-3">
-                    <select class="form-control" aria-label="Small" name="fromCity">
-                        <option th:each="city : ${tripFormController.getCitiesFromCountry(fromCountry)}"
-                        th:value="${city.getName()}"
-                        th:utext="${city.getName()}">
-                        </option>
+                    <select class="form-control" aria-label="Small" name="fromAirport">
+<!--                        <optgroup th:label="${city.getName()}" th:each="city : ${tripFormController.getCitiesFromCountry(fromCountry)}">-->
+                            <option th:each="airport : ${tripFormController.getAirportsFromCountry(fromCountry)}"
+                                    th:value="${airport.getIdAirport()}"
+                                    th:utext="${airport.getCity().getName() + ' - ' + airport.getName()}">
+                            </option>
+<!--                        </optgroup>-->
                     </select>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col col-3">
-                    <label>Select destination city: </label>
+                    <label>Select destination region: </label>
                 </div>
                 <div class="col col-3">
                     <select class="form-control" aria-label="Small" name="destinationCity">
-                        <option th:each="city : ${tripFormController.getCitiesFromCountry(destinationCountry)}"
-                                th:value="${city.getName()}"
-                                th:utext="${city.getName()}">
+                        <option th:each="airport : ${tripFormController.getAirportsFromCountry(destinationCountry)}"
+                                th:value="${airport.getIdAirport()}"
+                                th:utext="${airport.getCity().getName() + ' - ' + airport.getName()}">
                         </option>
+<!--                        <option th:each="city : ${tripFormController.getCitiesFromCountry(destinationCountry)}"-->
+<!--                                th:value="${city.getName()}"-->
+<!--                                th:utext="${city.getName()}">-->
+<!--                        </option>-->
                     </select>
                 </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="col col-12">
+                    <div class="d-flex justify-content-around">
+                        <button class="btn btn-success" type="submit">Submit</button>
+                        <a th:href="${'/'}"><button class="btn btn-light">Back to home page</button></a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        </form>
         <br />
 
         <div th:replace="fragments/footer :: footer"></div>

@@ -9,7 +9,7 @@
     <div th:replace="fragments/header :: header"></div>
 
         <div class="container">
-            <form class="" th:action="@{'/setTripDetails'}" method="get">
+            <form th:action="@{'/setTripDetails'}" method="get">
                 <div class="row">
                     <div class="col">
                         <label>From location:</label>
@@ -18,10 +18,10 @@
                         <label>Destination:</label>
                     </div>
                     <div class="col">
-                        <label>From date:</label>
+                        <label>Find trip between dates:</label>
                     </div>
                     <div class="col">
-                        <label>To date:</label>
+                        <label></label>
                     </div>
                     <div class="col">
                         <label>Nights:</label>
@@ -59,7 +59,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <input type="date" class="form-control" aria-label="Small" name="fromDate">
+                        <input type="date" class="form-control" aria-label="Small" name="fromDate" th:value="${today}">
                     </div>
                     <div class="col">
                         <input type="date" class="form-control" aria-label="Small" name="toDate">
@@ -87,9 +87,9 @@
                 </div>
             </form>
 
-            City controller tests: <br />
-            <a th:href="@{'/test1'}">Test 1</a><br />
-            <a th:href="@{'/test2/Matt'}">Test 2</a>
+<!--            City controller tests: <br />-->
+<!--            <a th:href="@{'/test1'}">Test 1</a><br />-->
+<!--            <a th:href="@{'/test2/Matt'}">Test 2</a>-->
         </div>
         <br />
 

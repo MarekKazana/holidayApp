@@ -16,4 +16,8 @@ public class TripAvailableController {
     public List<TripAvailable> getAvailableTrips(Long idAirport) {
         return tripAvailableService.getAvailableTrips(idAirport);
     }
+
+    public List<TripAvailable> getAllPromotedTripsFromCountry(Long idCountry) {
+        return tripAvailableService.getAllPromotedTripsFromCountry(idCountry);
+    }
 }

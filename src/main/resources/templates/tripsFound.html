@@ -6,23 +6,42 @@
         <title>Holidays application - trips found</title>
     </head>
     <body>
-        <div th:replace="fragments/header :: header"></div>
+        <div th:insert="fragments/header :: header"></div>
 
         <div class="container">
             <div class="row">
                 <div class="col">
                     <h4 class="text-center">Promoted trips:</h4>
-                    <div th:each="trip : ${promotedTripsFound}">
-                        <div th:replace="fragments/trip :: trip"></div>
+                    <div th:if="${promotedTripsFound.size() > 0}">
+                        <div th:each="trip : ${promotedTripsFound}">
+                            <div th:replace="fragments/trip.html :: trip"></div>
+                        </div>
+                    </div>
+                    <div th:unless="${promotedTripsFound.size() > 0}">
+                        <h5 class="text-left">There is not any promoted trips found.</h5>
                     </div>
                     <br />
                     <h4 class="text-center">Standard trips:</h4>
-                    <div th:each="trip : ${standardTripsFound}">
-                        <div th:object="${trip}" th:replace="fragments/trip :: trip"></div>
+                    <div th:if="${standardTripsFound.size() > 0}">
+                        <div th:each="trip : ${standardTripsFound}">
+                            <div th:replace="fragments/trip.html :: trip"></div>
+                        </div>
+                    </div>
+                    <div th:unless="${standardTripsFound.size() > 0}">
+                        <h5 class="text-left">There is not any trips found.</h5>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <br />
+                    <a th:href="${'/'}"><button class="btn btn-light">Back to home page</button></a>
+                </div>
+            </div>
         </div>
+        <br />
+        <br />
 <!--        <ul th:each="trip : ${tripsFound}">-->
 <!--            <div th:if="${trip.isPromoted()}">-->
 <!--                <div th:replace="fragments/trip :: trip">-->
@@ -68,6 +87,6 @@
 <!--            </div>-->
 <!--        </div>-->
 
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:insert="fragments/footer :: footer"></div>
     </body>
 </html>

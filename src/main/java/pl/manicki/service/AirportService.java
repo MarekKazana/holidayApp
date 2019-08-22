@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class AirportService {
     @Autowired
-    AirportRepository airportRepository;
+    private AirportRepository airportRepository;
 
     public List<Airport> getAirportsFromCountry(Long idCountry) {
         return airportRepository.findAirportsByCity_Country_IdCountry(idCountry);

@@ -49,6 +49,10 @@ public class TripController {
         return tripAvailableController.getAvailableTrips(idAirport);
     }
 
+    public List<TripAvailable> getAllPromotedTripsFromCountry(Long idCountry) {
+        return tripAvailableController.getAllPromotedTripsFromCountry(idCountry);
+    }
+
     public String isDateCorrect(String fromDate, String toDate) {
         try {
             LocalDate fromDateParsed = LocalDate.parse(fromDate);

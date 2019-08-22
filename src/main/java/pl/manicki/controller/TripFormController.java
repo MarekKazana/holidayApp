@@ -50,11 +50,11 @@ public class TripFormController {
     public ModelAndView findTrip(
             @ModelAttribute("destinationAirport") Long idDestinationAirport) {
         ModelAndView modelAndView = new ModelAndView();
-        ArrayList<TripAvailable> promotedTrips =
-                tripController.getAvailableTrips(idDestinationAirport).stream()
+        List<TripAvailable> allTrips = tripController.getAvailableTrips(idDestinationAirport);
+        List<TripAvailable> promotedTrips = allTrips.stream()
                         .filter(TripAvailable::isPromoted)
                         .collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<TripAvailable> standardTrips = tripController.getAvailableTrips(idDestinationAirport).stream()
+        List<TripAvailable> standardTrips = allTrips.stream()
                 .filter(tripAvailable -> !tripAvailable.isPromoted())
                 .collect(Collectors.toCollection(ArrayList::new));
         modelAndView.addObject("promotedTripsFound", promotedTrips);
@@ -66,7 +66,7 @@ public class TripFormController {
     @RequestMapping(value = "/selectedTrip", method = RequestMethod.POST)
     public ModelAndView selectedTrip(@ModelAttribute("idTrip") Long idTrip) {
         System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
-        return new ModelAndView("index");
+        return fillBasicForm();
     }
 
     public List<Country> getCountryByContinent(Long idContinent) {
@@ -79,6 +79,10 @@ public class TripFormController {
 
     public List<Airport> getAirportsFromCountry(Long idCountry) {
         return tripController.getAirportsFromCountry(idCountry);
+    }
+
+    public List<TripAvailable> getAllPromotedTripsFromCountry(Long idCountry) {
+        return tripController.getAllPromotedTripsFromCountry(idCountry);
     }
 
     private void checkCorrectnessOdTheDate(

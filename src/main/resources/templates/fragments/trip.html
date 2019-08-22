@@ -4,8 +4,9 @@
 </head>
 <body>
 <div th:fragment="trip">
+    <!--/*@thymesVar id="trip" type="pl.manicki.model.TripAvailable"*/-->
     <form th:action="@{'/selectedTrip'}" method="post">
-    <div class="container">
+        <div class="container">
         <div class="row">
             <div class="col-2">
                 <img class="img-thumbnail" width="200px" height="200px" th:src="${trip.getHotel().getImgUrl()}">

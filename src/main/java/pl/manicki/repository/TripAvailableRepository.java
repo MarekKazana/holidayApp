@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TripAvailableRepository extends JpaRepository<TripAvailable, Long> {
     List<TripAvailable> findAllByHotel_Airport_IdAirport(Long idAirport);
+
+    List<TripAvailable> findAllByPromotedIsTrueAndHotel_City_Country_IdCountry(Long idCountry);
 }

@@ -6,12 +6,12 @@
     <title>Holidays application</title>
 </head>
 <body>
-    <div th:replace="fragments/header :: header"></div>
+    <div th:insert="fragments/header :: header"></div>
 
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h3 class="text-center">Trip finder</h3>
+                    <h2 class="text-center font-weight-bold"><u>Trip finder</u></h2>
                     <h6 class="text-center">(set main trip properties)</h6>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 
                     <div class="col">
                         <select class="form-control" aria-label="Small" name="destinationCountry">
-                            <optgroup th:label="${continent.getName()}" th:each="continent : ${continents}">
+                            <optgroup th:each="continent : ${continents}" th:label="${continent.getName()}">
                                 <option th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}"
                                         th:value="${country.getIdCountry()}"
                                         th:utext="${country.getName()}">
@@ -90,17 +90,34 @@
                 <br />
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-outline-success col-3" type="submit">Submit</button>
+                        <button class="btn btn-outline-success btn-block" type="submit">Submit</button>
                     </div>
                 </div>
             </form>
 
-<!--            City controller tests: <br />-->
-<!--            <a th:href="@{'/test1'}">Test 1</a><br />-->
-<!--            <a th:href="@{'/test2/Matt'}">Test 2</a>-->
+            <br />
+            <br />
+            <div class="row">
+                <div class="col">
+                    <h3 class="text-center font-weight-bold">Promoted trips:</h3><br />
+                    <span th:each="continent : ${continents}">
+                        <span th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}">
+                            <span th:with="promotedTrips = ${tripFormController.getAllPromotedTripsFromCountry(country.getIdCountry())}">
+                                <div th:if="${promotedTrips.size() > 0}">
+                                    <u><h4 class="text-center" th:utext="${continent.getName() + ' - ' + country.getName()}"></h4></u>
+                                    <div th:each="trip : ${promotedTrips}">
+                                        <div th:replace="fragments/trip.html :: trip"></div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
         </div>
         <br />
 
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

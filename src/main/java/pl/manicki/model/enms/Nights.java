@@ -7,18 +7,18 @@ public enum Nights {
     NIGHTS21("21 nights", 21);
 
     private String name;
-    private int duration;
+    private int value;
 
-    Nights(String name, int duration) {
+    Nights(String name, int value) {
         this.name = name;
-        this.duration = duration;
+        this.value = value;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getValue() {
+        return value;
     }
 }

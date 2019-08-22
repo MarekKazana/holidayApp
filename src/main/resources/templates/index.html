@@ -9,6 +9,14 @@
     <div th:replace="fragments/header :: header"></div>
 
         <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3 class="text-center">Trip finder</h3>
+                    <h6 class="text-center">(set main trip properties)</h6>
+                </div>
+            </div>
+
+            <br />
             <form th:action="@{'/setTripDetails'}" method="get">
                 <div class="row">
                     <div class="col">
@@ -67,7 +75,7 @@
                     <div class="col">
                         <select class="form-control" aria-label="Small" name="nights">
                             <option th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"
-                                    th:value="${nights.getDuration()}"
+                                    th:value="${nights.getValue()}"
                                     th:utext="${nights.getName()}">
                             </option>
 <!--                            <option class="bg-dark text-light" th:each="nights : ${T(pl.manicki.model.enms.Nights).values()}"-->
@@ -82,7 +90,7 @@
                 <br />
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-success" type="submit">Submit</button>
+                        <button class="btn btn-outline-success col-3" type="submit">Submit</button>
                     </div>
                 </div>
             </form>

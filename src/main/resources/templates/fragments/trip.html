@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div th:fragment="trip">
+    <form th:action="@{'/selectedTrip'}" method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img class="img-thumbnail" width="200px" height="200px" th:src="${trip.getHotel().getImgUrl()}">
+            </div>
+            <div class="col">
+                <div class="row">
+                    <B><h5 class="mt-0 font-weight-bold" th:utext="${'Hotel: ' + trip.getHotel().getName()}"></h5></B>
+                </div>
+                <div class="row">
+                    <label class="mt-0">Address: </label>&nbsp;
+                    <label class="mt-0" th:utext="${trip.getHotel().getAddress() + ', ' + trip.getHotel().getCity().getName()}"></label>
+                </div>
+                <div class="row">
+                    <label class="mt-0">Airport: </label>&nbsp;
+                    <label class="mt-0" th:utext="${trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
+                </div>
+            </div>
+            <div class="col col-2">
+                <button class="btn btn-outline-dark align-middle" name="idTrip" th:value="${trip.getIdTripAvailable()}" type="submit">Select</button>
+            </div>
+        </div>
+        <hr>
+    </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package pl.manicki.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "hotel")
@@ -19,6 +20,9 @@ public class Hotel {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "img_url", length = 500)
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_city")
     private City city;
@@ -26,6 +30,9 @@ public class Hotel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_airport")
     private Airport airport;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<TripAvailable> tripAvailableList;
 
     public Long getIdHotel() {
         return idHotel;
@@ -59,6 +66,14 @@ public class Hotel {
         this.address = address;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public City getCity() {
         return city;
     }
@@ -73,5 +88,13 @@ public class Hotel {
 
     public void setAirport(Airport airport) {
         this.airport = airport;
+    }
+
+    public List<TripAvailable> getTripAvailableList() {
+        return tripAvailableList;
+    }
+
+    public void setTripAvailableList(List<TripAvailable> tripAvailableList) {
+        this.tripAvailableList = tripAvailableList;
     }
 }

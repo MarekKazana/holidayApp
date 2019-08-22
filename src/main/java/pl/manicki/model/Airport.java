@@ -21,6 +21,9 @@ public class Airport {
     @OneToMany(mappedBy = "airport")
     private List<Hotel> hotels;
 
+    @OneToMany(mappedBy = "airport")
+    private List<TripAvailable> tripAvailable;
+
     public Long getIdAirport() {
         return idAirport;
     }
@@ -51,5 +54,13 @@ public class Airport {
 
     public void setHotels(List<Hotel> hotels) {
         this.hotels = hotels;
+    }
+
+    public List<TripAvailable> getTripAvailable() {
+        return tripAvailable;
+    }
+
+    public void setTripAvailable(List<TripAvailable> tripAvailable) {
+        this.tripAvailable = tripAvailable;
     }
 }

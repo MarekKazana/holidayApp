@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import pl.manicki.model.Airport;
 import pl.manicki.model.Continent;
 import pl.manicki.model.Country;
+import pl.manicki.model.TripAvailable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,9 @@ public class TripController {
     @Autowired
     private AirportController airportController;
 
+    @Autowired
+    private TripAvailableController tripAvailableController;
+
 
     public List<Continent> getAllContinents() {
         return continentController.getAllContinents();
@@ -41,12 +45,18 @@ public class TripController {
         return airportController.getAirportsFromCountry(idCountry);
     }
 
+    public List<TripAvailable> getAvailableTrips(Long idAirport) {
+        return tripAvailableController.getAvailableTrips(idAirport);
+    }
+
     public String isDateCorrect(String fromDate, String toDate) {
         try {
             LocalDate fromDateParsed = LocalDate.parse(fromDate);
             LocalDate toDateParsed = LocalDate.parse(toDate);
             if (!fromDateParsed.isBefore(toDateParsed)) {
                 return "datesError";
+            } else if (fromDateParsed.isBefore(LocalDate.now())) {
+                return "fromDatePast";
             }
         } catch (Exception e) {
             return "parsingError";

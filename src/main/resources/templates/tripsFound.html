@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <title>Holidays application - trips found</title>
+    </head>
+    <body>
+        <div th:replace="fragments/header :: header"></div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4 class="text-center">Promoted trips:</h4>
+                    <div th:each="trip : ${promotedTripsFound}">
+                        <div th:replace="fragments/trip :: trip"></div>
+                    </div>
+                    <br />
+                    <h4 class="text-center">Standard trips:</h4>
+                    <div th:each="trip : ${standardTripsFound}">
+                        <div th:object="${trip}" th:replace="fragments/trip :: trip"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        <ul th:each="trip : ${tripsFound}">-->
+<!--            <div th:if="${trip.isPromoted()}">-->
+<!--                <div th:replace="fragments/trip :: trip">-->
+<!--                    <input th:name="${'trip'}" th:value="${trip}">-->
+<!--                    <input th:name="${'background'}" th:value="${'background-color:powderblue;'}">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div th:unless="${trip.isPromoted()}">-->
+<!--                <div th:replace="fragments/trip :: trip">-->
+<!--                    <input th:name="${'trip'}" th:value="${trip}">-->
+<!--                    <input th:name="${'background'}" th:value="${'background-color:white;'}">-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </ul>-->
+<!--        </div>-->
+
+        <!--                    <table class="table">-->
+<!--                        <thead class="thead-light">-->
+<!--                        <tr>-->
+<!--                            <th scope="col">#</th>-->
+<!--                            <th scope="col">City</th>-->
+<!--                            <th scope="col">Arrival date</th>-->
+<!--                            <th scope="col">Nights</th>-->
+<!--                            <th scope="col" title="Accommodation option">Acc. opt.</th>-->
+<!--                            <th scope="col">Price for adult</th>-->
+<!--                            <th scope="col">Price for child</th>-->
+<!--                            <th scope="col">&nbsp;</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tr th:each="trip,iter : ${tripsFound}">-->
+<!--                            <td><label th:utext="${iter.index}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getHotel().getCity().getName()}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getArrivalDate()}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getNights().getName()}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getAccommodationOptions().name()}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getAdultPrice()}"></label></td>-->
+<!--                            <td><label th:utext="${trip.getChildPrice()}"></label></td>-->
+<!--                            <td><input type="radio" name="radio" id="radio" th:value="${trip.getIdTripAvailable()}"></td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

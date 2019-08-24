@@ -19,4 +19,8 @@ public class CountryService {
     public Country getCountry(Long idCountry) {
         return countryRepository.findById(idCountry).isPresent() ? countryRepository.findById(idCountry).get() : null;
     }
+
+    public List<Country> getAllCountries() {
+        return countryRepository.findAll();
+    }
 }

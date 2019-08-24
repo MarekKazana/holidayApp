@@ -8,7 +8,10 @@ import pl.manicki.model.Country;
 import pl.manicki.model.TripAvailable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class TripController {
@@ -53,6 +56,20 @@ public class TripController {
         return tripAvailableController.getAllPromotedTripsFromCountry(idCountry);
     }
 
+    public List<TripAvailable> getPromotedTrips(List<TripAvailable> allTrips) {
+        return allTrips.stream()
+                .filter(TripAvailable::isPromoted)
+                .filter(trip -> trip.getArrivalDate().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public List<TripAvailable> getStandardTrips(List<TripAvailable> allTrips) {
+        return allTrips.stream()
+                .filter(trip -> !trip.isPromoted())
+                .filter(trip -> trip.getArrivalDate().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public String isDateCorrect(String fromDate, String toDate) {
         try {
             LocalDate fromDateParsed = LocalDate.parse(fromDate);
@@ -66,5 +83,9 @@ public class TripController {
             return "parsingError";
         }
         return "datesAreCorrect";
+    }
+
+    public List<Country> getAllCountries() {
+        return countryController.getAllCountries();
     }
 }

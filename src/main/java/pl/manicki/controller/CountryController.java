@@ -20,4 +20,8 @@ public class CountryController {
     public Country getCountry(Long idCountry) {
         return countryService.getCountry(idCountry);
     }
+
+    public List<Country> getAllCountries() {
+        return countryService.getAllCountries();
+    }
 }

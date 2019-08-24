@@ -16,12 +16,41 @@
                     <B><h5 class="mt-0 font-weight-bold" th:utext="${'Hotel: ' + trip.getHotel().getName()}"></h5></B>
                 </div>
                 <div class="row">
-                    <label class="mt-0">Address: </label>&nbsp;
-                    <label class="mt-0" th:utext="${trip.getHotel().getAddress() + ', ' + trip.getHotel().getCity().getName()}"></label>
+                    <h6 class="mt-0" th:utext="${'Address: ' + trip.getHotel().getAddress() + ', ' + trip.getHotel().getCity().getName()}"></h6>
                 </div>
                 <div class="row">
-                    <label class="mt-0">Airport: </label>&nbsp;
-                    <label class="mt-0" th:utext="${trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
+                    <label class="mt-0" th:utext="${'Airport: ' + trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Arrival date: ' + trip.getArrivalDate().toString().replace('T', ' ')}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Departure day: ' + trip.getDepartureDate().toString().replace('T', ' ')}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Nights: ' + trip.getNights().getName()}"></label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    &nbsp;
+                </div>
+                <div class="row">
+                    <label th:utext="${'Flight from: ' + trip.getAirport().getCity().getCountry().getName() + ' / '
+                                                    +  trip.getAirport().getCity().getName() + ' - '
+                                                    + trip.getAirport().getName()}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Price for adult: ' + trip.getAdultPrice() + '$'}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Price for child: ' + trip.getChildPrice() + '$'}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Free adult places: ' + trip.getAdultPlacesAvailable()}"></label>
+                </div>
+                <div class="row">
+                    <label th:utext="${'Free child places: ' + trip.getChildrenPlacesAvailable()}"></label>
                 </div>
             </div>
             <div class="col col-2">

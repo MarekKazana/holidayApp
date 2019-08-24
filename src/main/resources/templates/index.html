@@ -90,31 +90,36 @@
                 <br />
                 <div class="row">
                     <div class="col">
+                        <input name="idTrip" value="-1" type="hidden">
                         <button class="btn btn-outline-success btn-block" type="submit">Submit</button>
                     </div>
                 </div>
             </form>
 
+<!--            <div th:utext="${#session.getAttribute('user')}"></div>-->
+
             <br />
             <br />
+            <form th:action="@{'/selectedTrip'}" method="post">
             <div class="row">
                 <div class="col">
                     <h3 class="text-center font-weight-bold">Promoted trips:</h3><br />
-                    <span th:each="continent : ${continents}">
-                        <span th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}">
-                            <span th:with="promotedTrips = ${tripFormController.getAllPromotedTripsFromCountry(country.getIdCountry())}">
+                    <div th:each="continent : ${continents}">
+                        <div th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}">
+                            <div th:with="promotedTrips = ${tripFormController.getAllPromotedTripsFromCountry(country.getIdCountry())}">
                                 <div th:if="${promotedTrips.size() > 0}">
-                                    <u><h4 class="text-center" th:utext="${continent.getName() + ' - ' + country.getName()}"></h4></u>
+                                    <u><h4 class="text-left" th:utext="${continent.getName() + ' - ' + country.getName()}"></h4></u>
                                     <div th:each="trip : ${promotedTrips}">
                                         <div th:replace="fragments/trip.html :: trip"></div>
                                     </div>
                                     <br />
                                 </div>
-                            </span>
-                        </span>
-                    </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            </form>
         </div>
         <br />
 

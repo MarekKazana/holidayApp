@@ -5,9 +5,10 @@
 <body>
 <div th:fragment="trip">
     <!--/*@thymesVar id="trip" type="pl.manicki.model.TripAvailable"*/-->
-    <form th:action="@{${source == 'mainPage'} ? '/selectedTripFromMainPage' : '/selectedTrip'}" method="post">
+    <form th:action="@{'/selectedTrip'}" method="post">
         <div class="container">
         <div class="row">
+            <input name="source" th:value="${source}" hidden>
             <div class="col-2">
                 <img class="img-thumbnail" width="200px" height="200px" th:src="${trip.getHotel().getImgUrl()}">
             </div>
@@ -22,10 +23,10 @@
                     <label class="mt-0" th:utext="${'Airport: ' + trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
                 </div>
                 <div class="row">
-                    <label th:utext="${'Arrival Day: ' + #temporals.format(trip.getArrivalDate(), 'dd/MMM/yyyy HH:mm')}"></label>
+                    <label th:utext="${'Arrival Day: ' + #temporals.format(trip.getArrivalDate(), 'dd/MM/yyyy HH:mm')}"></label>
                 </div>
                 <div class="row">
-                    <label th:utext="${'Departure day: ' + trip.getDepartureDate()}"></label>
+                    <label th:utext="${'Departure day: ' + #temporals.format(trip.getDepartureDate(), 'dd/MM/yyyy HH:mm')}"></label>
                 </div>
                 <div class="row">
                     <label th:utext="${'Nights: ' + trip.getNights().getName()}"></label>

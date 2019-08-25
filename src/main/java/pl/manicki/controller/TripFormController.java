@@ -74,9 +74,18 @@ public class TripFormController {
     }
 
     @RequestMapping(value = "/selectedTrip", method = RequestMethod.POST)
-    public ModelAndView selectedTrip(@ModelAttribute("idTrip") Long idTrip) {
-        System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
-        return fillBasicForm();
+    public ModelAndView selectedTrip(
+            @ModelAttribute("idTrip") Long idTrip,
+            @ModelAttribute("source") String source
+    ) {
+        System.out.println("TripFormController.selectedTrip | source = " + source);
+
+        if (source.contains("mainPage")) {
+            return selectedTripFromMainPage(idTrip);
+        } else {
+            System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
+            return fillBasicForm();
+        }
     }
 
     public List<Country> getCountryByContinent(Long idContinent) {

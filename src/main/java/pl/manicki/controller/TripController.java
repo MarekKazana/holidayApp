@@ -10,6 +10,7 @@ import pl.manicki.model.TripAvailable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,9 @@ public class TripController {
     }
 
     public List<Country> getCountryByContinent(Long idContinent) {
-        return countryController.getCountryByContinent(idContinent);
+        return countryController.getCountryByContinent(idContinent).stream()
+                .sorted(Comparator.comparing(Country::getName))
+                .collect(Collectors.toList());
     }
 
     public Country getCountry(Long idCountry) {
@@ -45,29 +48,37 @@ public class TripController {
     }
 
     public List<Airport> getAirportsFromCountry(Long idCountry) {
-        return airportController.getAirportsFromCountry(idCountry);
+        return airportController.getAirportsFromCountry(idCountry).stream()
+                .sorted(Comparator.comparing(Airport::getName))
+                .collect(Collectors.toList());
     }
 
     public List<TripAvailable> getAvailableTrips(Long idAirport) {
-        return tripAvailableController.getAvailableTrips(idAirport);
+        return tripAvailableController.getAvailableTrips(idAirport).stream()
+                .sorted(Comparator.comparing(TripAvailable::getArrivalDate))
+                .collect(Collectors.toList());
     }
 
     public List<TripAvailable> getAllPromotedTripsFromCountry(Long idCountry) {
-        return tripAvailableController.getAllPromotedTripsFromCountry(idCountry);
+        return tripAvailableController.getAllPromotedTripsFromCountry(idCountry).stream()
+                .sorted(Comparator.comparing(TripAvailable::getArrivalDate))
+                .collect(Collectors.toList());
     }
 
     public List<TripAvailable> getPromotedTrips(List<TripAvailable> allTrips) {
         return allTrips.stream()
                 .filter(TripAvailable::isPromoted)
                 .filter(trip -> trip.getArrivalDate().isAfter(LocalDateTime.now()))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .sorted(Comparator.comparing(TripAvailable::getArrivalDate))
+                .collect(Collectors.toList());
     }
 
     public List<TripAvailable> getStandardTrips(List<TripAvailable> allTrips) {
         return allTrips.stream()
                 .filter(trip -> !trip.isPromoted())
                 .filter(trip -> trip.getArrivalDate().isAfter(LocalDateTime.now()))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .sorted(Comparator.comparing(TripAvailable::getArrivalDate))
+                .collect(Collectors.toList());
     }
 
     public String isDateCorrect(String fromDate, String toDate) {

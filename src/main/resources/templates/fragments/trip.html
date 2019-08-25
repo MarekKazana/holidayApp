@@ -5,7 +5,7 @@
 <body>
 <div th:fragment="trip">
     <!--/*@thymesVar id="trip" type="pl.manicki.model.TripAvailable"*/-->
-    <form th:action="@{'/selectedTrip'}" method="post">
+    <form th:action="@{${source == 'mainPage'} ? '/selectedTripFromMainPage' : '/selectedTrip'}" method="post">
         <div class="container">
         <div class="row">
             <div class="col-2">
@@ -22,10 +22,10 @@
                     <label class="mt-0" th:utext="${'Airport: ' + trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
                 </div>
                 <div class="row">
-                    <label th:utext="${'Arrival date: ' + trip.getArrivalDate().toString().replace('T', ' ')}"></label>
+                    <label th:utext="${'Arrival Day: ' + #temporals.format(trip.getArrivalDate(), 'dd/MMM/yyyy HH:mm')}"></label>
                 </div>
                 <div class="row">
-                    <label th:utext="${'Departure day: ' + trip.getDepartureDate().toString().replace('T', ' ')}"></label>
+                    <label th:utext="${'Departure day: ' + trip.getDepartureDate()}"></label>
                 </div>
                 <div class="row">
                     <label th:utext="${'Nights: ' + trip.getNights().getName()}"></label>
@@ -54,7 +54,11 @@
                 </div>
             </div>
             <div class="col col-2">
-                <button class="btn btn-outline-dark align-middle" name="idTrip" th:value="${trip.getIdTripAvailable()}" type="submit">Select</button>
+                <button class="btn btn-outline-dark btn-block" name="idTrip" th:value="${trip.getIdTripAvailable()}" type="submit">Select</button><br />
+                <div th:if="${session.get('user') == 'admin'}">
+                    <button class="btn btn-outline-success btn-block" name="admin" th:value="${'admin'}" type="submit">Edit</button><br />
+                    <button class="btn btn-outline-danger btn-block" name="admin" th:value="${'admin'}" type="submit">Delete</button>
+                </div>
             </div>
         </div>
         <hr>

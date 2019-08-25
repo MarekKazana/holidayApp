@@ -5,9 +5,14 @@
     <body>
         <div th:fragment="header">
             <div class="alert bg-dark">
-                <div class="custom-control-inline"><h4 class="custom-control-inline"><a class="text-light" th:href="@{/}">Holiday App</a></h4>
+                <div class="custom-control-inline"><h4 class="custom-control-inline"><a class="text-light" th:href="@{'/'}">Holiday App</a></h4>
                     <h6 class="custom-control-inline text-light d-flex align-items-center">v.1.0.0</h6></div>
-                <div class="float-right"><a class="text-light" href="#">Sign in</a></div>
+                <span th:if="${session.get('user') != 'admin'}">
+                    <div class="float-right"><a class="text-light" th:href="${'/signIn'}">Sign in</a></div>
+                </span>
+                <span th:if="${session.get('user') == 'admin'}">
+                    <div class="float-right"><a class="text-light" th:href="${'/signOut'}">Sign out</a></div>
+                </span>
             </div>
         </div>
     </body>

@@ -10,11 +10,9 @@ import pl.manicki.model.Airport;
 import pl.manicki.model.Country;
 import pl.manicki.model.TripAvailable;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class TripFormController {
@@ -32,10 +30,17 @@ public class TripFormController {
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-//    public void saveUserInSessionAtributes(HttpServletRequest request) {
-//        request.getSession().setAttribute("user", "testUser");
-//    }
+    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
+    public ModelAndView signIn(HttpServletRequest request) {
+        request.getSession().setAttribute("user", "admin");
+        return fillBasicForm();
+    }
+
+    @RequestMapping(value = "/signOut", method = RequestMethod.GET)
+    public ModelAndView signOut(HttpServletRequest request) {
+        request.getSession().setAttribute("user", "");
+        return fillBasicForm();
+    }
 
     @RequestMapping(value = "/setTripDetails", method = RequestMethod.GET)
     public ModelAndView setTripDetails(
@@ -55,18 +60,16 @@ public class TripFormController {
             @ModelAttribute("destinationAirport") Long idDestinationAirport) {
         ModelAndView modelAndView = new ModelAndView();
         List<TripAvailable> allTrips = tripController.getAvailableTrips(idDestinationAirport);
-        List<TripAvailable> promotedTrips = tripController.getPromotedTrips(allTrips);
-        List<TripAvailable> standardTrips = tripController.getStandardTrips(allTrips);
-        modelAndView.addObject("promotedTripsFound", promotedTrips);
-        modelAndView.addObject("standardTripsFound", standardTrips);
+        modelAndView.addObject("promotedTripsFound", tripController.getPromotedTrips(allTrips));
+        modelAndView.addObject("standardTripsFound", tripController.getStandardTrips(allTrips));
         modelAndView.setViewName("tripsFound");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/selectedPromotedTrip", method = RequestMethod.POST)
-    public ModelAndView selectedPromotedTrip(@ModelAttribute("idTrip") Long idTrip) {
-        System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
-        //TODO Add to model and view object of selected trip and show it on setTripDetails. Try to lock the fields of airports.
+    @RequestMapping(value = "/selectedTripFromMainPage", method = RequestMethod.POST)
+    public ModelAndView selectedTripFromMainPage(@ModelAttribute("idTrip") Long idTrip) {
+        System.out.println("TripFormController.selectedTripFromMainPage | idTrip = " + idTrip);
+        //TODO Add to model and view object of selected trip and show it on setTripDetails with locked the fields of airports.
         return fillBasicForm();
     }
 

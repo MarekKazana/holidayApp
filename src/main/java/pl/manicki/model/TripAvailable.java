@@ -52,6 +52,24 @@ public class TripAvailable {
     @JoinColumn(name = "id_hotel")
     private Hotel hotel;
 
+    public TripAvailable() {
+
+    }
+
+    public TripAvailable(LocalDateTime arrivalDate, LocalDateTime departureDate, Nights nights, short adultPlacesAvailable, short childrenPlacesAvailable, boolean promoted, BigDecimal adultPrice, BigDecimal childPrice, AccommodationOptions accommodationOptions, Airport airport, Hotel hotel) {
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.nights = nights;
+        this.adultPlacesAvailable = adultPlacesAvailable;
+        this.childrenPlacesAvailable = childrenPlacesAvailable;
+        this.promoted = promoted;
+        this.adultPrice = adultPrice;
+        this.childPrice = childPrice;
+        this.accommodationOptions = accommodationOptions;
+        this.airport = airport;
+        this.hotel = hotel;
+    }
+
     public Long getIdTripAvailable() {
         return idTripAvailable;
     }
@@ -146,5 +164,17 @@ public class TripAvailable {
 
     public void setAccommodationOptions(AccommodationOptions accommodationOptions) {
         this.accommodationOptions = accommodationOptions;
+    }
+
+    public boolean isHalfStar(Hotel hotel) {
+        return (hotel.getRating() > ((int) hotel.getRating()));
+    }
+
+    public int emptyStarsCount(Hotel hotel) {
+        int maxRating = 5;
+        if (hotel.getRating() == maxRating) {
+            return 0;
+        }
+        return (hotel.getRating() > ((int) hotel.getRating())) ? (maxRating - ((int) hotel.getRating() + 1)) : (maxRating - ((int) hotel.getRating()));
     }
 }

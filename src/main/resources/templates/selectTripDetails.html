@@ -15,22 +15,22 @@
                 </div>
             </div>
 
-            <div th:if="${idTrip != -1}" th:utext="${idTrip}"></div>
+<!--            <div th:if="${idTrip != -1}" th:utext="${idTrip}"></div>-->
+            <label th:utext="${source}"></label><br />
 
             <form th:action="@{'/findTrip'}" method="post">
-            <div class="row">
+                <div class="row">
                 <div class="col">
-                    Destination country: <label th:utext="${tripFormController.getCountry(destinationCountry).getName()}"></label><br />
-                    <input th:name="destinationCountry" th:value="${destinationCountry}" hidden>
+                    Destination country: <label th:utext="${idTrip != -1} ? ${tripFormController.getCountry(trip.getHotel().getCity().getCountry().getIdCountry()).getName()} : ${tripFormController.getCountry(idDestinationCountry).getName()}"></label> <br />
                 </div>
                 <div class="col">
-                    From date: <label th:utext="${fromDate}"></label>
+                    From date: <label th:utext="${idTrip != -1} ? ${#temporals.format(trip.getArrivalDate(), 'dd/MM/yyyy HH:mm')} : ${fromDate}"></label>
                 </div>
                 <div class="col">
-                    to date: <label th:utext="${toDate}"></label>
+                    to date: <label th:utext="${idTrip != -1} ? ${#temporals.format(trip.getDepartureDate(), 'dd/MM/yyyy HH:mm')} : ${toDate}"></label>
                 </div>
                 <div class="col">
-                    Nights: <label th:utext="${nights}"></label>
+                    Nights: <label th:utext="${idTrip != -1} ? ${trip.getNights().getValue()} : ${nights}"></label>
                 </div>
             </div>
             <div class="row">
@@ -38,14 +38,17 @@
                     <label>Select city you will fly from: </label>
                 </div>
                 <div class="col col-3">
-                    <select class="form-control" aria-label="Small" name="fromAirport">
+                    <fieldset th:disabled="${idTrip != -1}">
+                    <select class="form-control" aria-label="Small" name="fromAirportId">
 <!--                        <optgroup th:label="${city.getName()}" th:each="city : ${tripFormController.getCitiesFromCountry(fromCountry)}">-->
-                            <option th:each="airport : ${tripFormController.getAirportsFromCountry(fromCountry)}"
+                            <option th:each="airport : ${tripFormController.getAirportsFromCountry(idFromCountry)}"
+                                    th:selected="${idTrip != -1} ? ${airport.getIdAirport() == trip.getAirport().getIdAirport()}"
                                     th:value="${airport.getIdAirport()}"
                                     th:utext="${airport.getCity().getName() + ' - ' + airport.getName()}">
                             </option>
 <!--                        </optgroup>-->
                     </select>
+                    </fieldset>
                 </div>
             </div>
 
@@ -54,20 +57,52 @@
                     <label>Select destination region: </label>
                 </div>
                 <div class="col col-3">
-                    <select class="form-control" aria-label="Small" name="destinationAirport">
-                        <option th:each="airport : ${tripFormController.getAirportsFromCountry(destinationCountry)}"
+                    <fieldset th:disabled="${idTrip != -1}">
+                    <select class="form-control" aria-label="Small" name="destinationAirportId">
+                        <option th:each="airport : ${tripFormController.getAirportsFromCountry(idDestinationCountry)}"
+                                th:selected="${idTrip != -1} ? ${airport.getIdAirport() == trip.getHotel().getAirport().getIdAirport()}"
                                 th:value="${airport.getIdAirport()}"
                                 th:utext="${airport.getCity().getName() + ' - ' + airport.getName()}">
                         </option>
                     </select>
+                    </fieldset>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="col col-12">
+                <div class="col">
+                    <label th:utext="${'Set number of adults'}"></label>
+                </div>
+                <div class="col">
+                    <select class="form-control" aria-label="Small" name="adults">
+                        <option th:each="number : ${#numbers.sequence(1, 10)}"
+                                th:selected="${number == 1}"
+                                th:value="${number}"
+                                th:utext="${number}"></option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label th:utext="${'Set number of children'}"></label>
+                </div>
+                <div class="col">
+                    <select class="form-control" aria-label="Small" name="children">
+                        <option th:each="number : ${#numbers.sequence(0, 10)}"
+                                th:selected="${number == 0}"
+                                th:value="${number}"
+                                th:utext="${number}"></option>
+                    </select>
+                </div>
+            </div>
+
+                <input name="fromAirportId" th:value="${idTrip != -1} ? ${trip.getAirport().getIdAirport()}" hidden>
+                <input name="destinationAirportId" th:value="${idTrip != -1} ? ${trip.getHotel().getAirport().getIdAirport()}" hidden>
+
+            <br />
+            <div class="row">
+                <div class="col">
                     <div class="d-flex justify-content-around">
                         <button class="btn btn-outline-success" type="submit">Submit</button>
-                        <a th:href="${'/'}"><button class="btn btn-outline-secondary">Back to home page</button></a>
+                        <a th:href="@{'/'}"><button class="btn btn-outline-secondary" type="button">Back to home page</button></a>
                     </div>
                 </div>
             </div>

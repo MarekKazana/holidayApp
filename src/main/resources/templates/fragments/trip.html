@@ -4,6 +4,7 @@
 </head>
 <body>
 <div th:fragment="trip">
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <!--/*@thymesVar id="trip" type="pl.manicki.model.TripAvailable"*/-->
     <form th:action="@{'/selectedTrip'}" method="post">
         <div class="container">
@@ -13,48 +14,60 @@
                 <img class="img-thumbnail" width="200px" height="200px" th:src="${trip.getHotel().getImgUrl()}">
             </div>
             <div class="col">
-                <div class="row">
-                    <B><h5 class="mt-0 font-weight-bold" th:utext="${'Hotel: ' + trip.getHotel().getName()}"></h5></B>
+                <div class="row d-flex align-items-center">
+                    <B><h5 class="mt-0 font-weight-bold" th:utext="${'Hotel: ' + trip.getHotel().getName()}"></h5></B>&nbsp;&nbsp;&nbsp;
+                    <div class="d-inline" th:each="loop : ${#numbers.sequence(1, trip.getHotel().getRating())}">
+                        <ion-icon name="star" size="large"></ion-icon>
+                    </div>
+                    <div class="d-inline" th:if="${trip.isHalfStar(trip.getHotel())}">
+                        <ion-icon name="star-half" size="large"></ion-icon>
+                    </div>
+                    <span th:if="${trip.getHotel().getRating() <= 4}">
+                        <div class="d-inline" th:each="loop : ${#numbers.sequence(1, trip.emptyStarsCount(trip.getHotel()))}">
+                            <ion-icon name="star-outline" size="large"></ion-icon>
+                        </div>
+                    </span>
                 </div>
                 <div class="row">
-                    <h6 class="mt-0" th:utext="${'Address: ' + trip.getHotel().getAddress() + ', ' + trip.getHotel().getCity().getName()}"></h6>
-                </div>
-                <div class="row">
-                    <label class="mt-0" th:utext="${'Airport: ' + trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Arrival Day: ' + #temporals.format(trip.getArrivalDate(), 'dd/MM/yyyy HH:mm')}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Departure day: ' + #temporals.format(trip.getDepartureDate(), 'dd/MM/yyyy HH:mm')}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Nights: ' + trip.getNights().getName()}"></label>
+                    <div class="col">
+                        <div class="row">
+                            <h6 class="mt-0" th:utext="${'Address: ' + trip.getHotel().getAddress() + ', ' + trip.getHotel().getCity().getName()}"></h6>
+                        </div>
+                        <div class="row">
+                            <label class="mt-0" th:utext="${'Airport: ' + trip.getHotel().getAirport().getName() + ' - ' + trip.getHotel().getAirport().getCity().getName()}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Arrival Day: ' + #temporals.format(trip.getArrivalDate(), 'dd/MM/yyyy HH:mm')}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Departure day: ' + #temporals.format(trip.getDepartureDate(), 'dd/MM/yyyy HH:mm')}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Nights: ' + trip.getNights().getName()}"></label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <label th:utext="${'Flight from: ' + trip.getAirport().getCity().getCountry().getName() + ' / '
+                                                            +  trip.getAirport().getCity().getName() + ' - '
+                                                            + trip.getAirport().getName()}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Price for adult: ' + trip.getAdultPrice() + '$'}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Price for child: ' + trip.getChildPrice() + '$'}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Free adult places: ' + trip.getAdultPlacesAvailable()}"></label>
+                        </div>
+                        <div class="row">
+                            <label th:utext="${'Free child places: ' + trip.getChildrenPlacesAvailable()}"></label>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="row">
-                    &nbsp;
-                </div>
-                <div class="row">
-                    <label th:utext="${'Flight from: ' + trip.getAirport().getCity().getCountry().getName() + ' / '
-                                                    +  trip.getAirport().getCity().getName() + ' - '
-                                                    + trip.getAirport().getName()}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Price for adult: ' + trip.getAdultPrice() + '$'}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Price for child: ' + trip.getChildPrice() + '$'}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Free adult places: ' + trip.getAdultPlacesAvailable()}"></label>
-                </div>
-                <div class="row">
-                    <label th:utext="${'Free child places: ' + trip.getChildrenPlacesAvailable()}"></label>
-                </div>
-            </div>
-            <div class="col col-2">
+            <div class="col col-1">
                 <button class="btn btn-outline-dark btn-block" name="idTrip" th:value="${trip.getIdTripAvailable()}" type="submit">Select</button><br />
                 <div th:if="${session.get('user') == 'admin'}">
                     <button class="btn btn-outline-success btn-block" name="admin" th:value="${'admin'}" type="submit">Edit</button><br />

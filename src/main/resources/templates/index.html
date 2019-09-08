@@ -38,7 +38,7 @@
 
                 <div class="row">
                     <div class="col">
-                        <select class="form-control" aria-label="Small" name="fromCountry" id="countryId" onchange="template()">
+                        <select class="form-control" aria-label="Small" name="idFromCountry" id="countryId" onchange="template()">
                             <optgroup th:label="${continent.getName()}" th:each="continent : ${continents}">
                                 <option th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}"
                                         th:value="${country.getIdCountry()}"
@@ -57,7 +57,7 @@
                     </script>
 
                     <div class="col">
-                        <select class="form-control" aria-label="Small" name="destinationCountry">
+                        <select class="form-control" aria-label="Small" name="idDestinationCountry">
                             <optgroup th:each="continent : ${continents}" th:label="${continent.getName()}">
                                 <option th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}"
                                         th:value="${country.getIdCountry()}"
@@ -116,6 +116,28 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div th:if="${promotedTripsCounter == 0}">
+                        <label>There is no promoted trips.</label>
+                    </div>
+
+                    <br />
+                    <h3 class="text-center font-weight-bold">Standard trips last minute:</h3><br />
+                    <div th:each="continent : ${continents}">
+                        <div th:each="country : ${tripFormController.getCountryByContinent(continent.getIdContinent())}">
+                            <div th:with="standardTrips = ${tripFormController.getAllStandardTripsLastMinuteFromCountry(country.getIdCountry())}">
+                                <div th:if="${standardTrips.size() > 0}">
+                                    <u><h4 class="text-left" th:utext="${continent.getName() + ' - ' + country.getName()}"></h4></u>
+                                    <div th:each="trip : ${standardTrips}">
+                                        <div th:replace="fragments/trip.html :: trip"></div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${standardTripsLastMinuteCounter == 0}">
+                        <label>There is no 'Last minute' trips.</label>
                     </div>
                 </div>
             </div>

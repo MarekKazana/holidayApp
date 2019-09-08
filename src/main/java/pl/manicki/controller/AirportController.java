@@ -16,4 +16,8 @@ public class AirportController {
     public List<Airport> getAirportsFromCountry(Long idCountry) {
         return airportService.getAirportsFromCountry(idCountry);
     }
+
+    public Airport getAirport(Long idAirport) {
+        return airportService.getAirport(idAirport);
+    }
 }

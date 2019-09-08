@@ -21,7 +21,4 @@ public class CountryController {
         return countryService.getCountry(idCountry);
     }
 
-    public List<Country> getAllCountries() {
-        return countryService.getAllCountries();
-    }
 }

@@ -1,11 +1,12 @@
 package pl.manicki.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import pl.manicki.generators.TripGenerator;
 import pl.manicki.model.Airport;
 import pl.manicki.model.Country;
 import pl.manicki.model.TripAvailable;
@@ -14,19 +15,111 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 
-@Controller
+@RestController
 public class TripFormController {
 
     @Autowired
     private TripController tripController;
 
+    @Autowired
+    private ContinentController continentController;
+
+    @Autowired
+    private CountryController countryController;
+
+    @Autowired
+    private CityController cityController;
+
+    @Autowired
+    private AirportController airportController;
+
+    @Autowired
+    private TripAvailableController tripAvailableController;
+
+    @Autowired
+    private TripGenerator tripGenerator;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView fillBasicForm() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("continents", tripController.getAllContinents());
-        modelAndView.addObject("today", LocalDate.now());
-        modelAndView.addObject("tripFormController", this);
+        List<TripAvailable> allTrips = tripAvailableController.getAllTrips();
+        modelAndView
+                .addObject("continents", continentController.getAllContinents())
+                .addObject("today", LocalDate.now())
+                .addObject("tripFormController", this)
+                .addObject("promotedTripsCounter", tripAvailableController.getPromotedTrips(allTrips).size())
+                .addObject("standardTripsLastMinuteCounter", tripAvailableController.countStandardLastMinuteTrips(allTrips))
+        ;
         modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/setTripDetails", method = RequestMethod.GET)
+    public ModelAndView setTripDetails(
+            @ModelAttribute("idFromCountry") Long idFromCountry,
+            @ModelAttribute("idDestinationCountry") Long idDestinationCountry,
+            @ModelAttribute("fromDate") String fromDate,
+            @ModelAttribute("toDate") String toDate,
+            @ModelAttribute("nights") int nights,
+            @ModelAttribute("idTrip") Long idTrip) {
+        ModelAndView modelAndView = new ModelAndView();
+        checkCorrectnessOfTheDate(fromDate, toDate, modelAndView);
+
+        if (idTrip != -1) {
+            modelAndView
+                    .addObject("trip", tripAvailableController.getTrip(idTrip))
+                    .addObject("idFromCountry", idFromCountry)
+                    .addObject("idDestinationCountry", idDestinationCountry)
+            ;
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/selectedTripFromMainPage", method = RequestMethod.POST)
+    public ModelAndView selectedTripFromMainPage(
+            @ModelAttribute("idTrip") Long idTrip,
+            @ModelAttribute("source") String source
+    ) {
+        TripAvailable trip = tripAvailableController.getTrip(idTrip);
+
+        return setTripDetails(
+                trip.getAirport().getCity().getCountry().getIdCountry(),
+                trip.getHotel().getCity().getCountry().getIdCountry(),
+                trip.getArrivalDate().toLocalDate().toString(),
+                trip.getDepartureDate().toLocalDate().toString(),
+                trip.getNights().getValue(),
+                idTrip);
+    }
+
+    @RequestMapping(value = "/selectedTrip", method = RequestMethod.POST)
+    public ModelAndView selectedTrip(
+            @ModelAttribute("idTrip") Long idTrip,
+            @ModelAttribute("source") String source
+    ) {
+        System.out.println("TripFormController.selectedTrip | source = " + source);
+
+        if (source.contains("mainPage")) {
+            return selectedTripFromMainPage(idTrip, source);
+        } else {
+            System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
+            return fillBasicForm();
+        }
+    }
+
+    @RequestMapping(value = "/findTrip", method = RequestMethod.POST)
+    public ModelAndView findTrip(
+            @ModelAttribute("fromAirportId") Long fromAirportId,
+            @ModelAttribute("destinationAirportId") Long destinationAirportId) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (fromAirportId == destinationAirportId) {
+            modelAndView.addObject("errorMessage", "Destination airport can not be the same as departure.<br>Fill it correctly and try again.");
+            modelAndView.setViewName("confirmations/error");
+            return modelAndView;
+        }
+        List<TripAvailable> allTrips = tripAvailableController.getAvailableTrips(destinationAirportId);
+        modelAndView.addObject("promotedTripsFound", tripAvailableController.getPromotedTrips(allTrips));
+        modelAndView.addObject("standardTripsFound", tripAvailableController.getStandardTrips(allTrips));
+        modelAndView.setViewName("tripsFound");
         return modelAndView;
     }
 
@@ -42,69 +135,33 @@ public class TripFormController {
         return fillBasicForm();
     }
 
-    @RequestMapping(value = "/setTripDetails", method = RequestMethod.GET)
-    public ModelAndView setTripDetails(
-            @ModelAttribute("fromCountry") Long idFromCountry,
-            @ModelAttribute("destinationCountry") Long idDestinationCountry,
-            @ModelAttribute("fromDate") String fromDate,
-            @ModelAttribute("toDate") String toDate,
-            @ModelAttribute("nights") int nights,
-            @ModelAttribute("idTrip") Long idTrip) {
-        ModelAndView modelAndView = new ModelAndView();
-        checkCorrectnessOdTheDate(fromDate, toDate, modelAndView);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/findTrip", method = RequestMethod.POST)
-    public ModelAndView findTrip(
-            @ModelAttribute("destinationAirport") Long idDestinationAirport) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<TripAvailable> allTrips = tripController.getAvailableTrips(idDestinationAirport);
-        modelAndView.addObject("promotedTripsFound", tripController.getPromotedTrips(allTrips));
-        modelAndView.addObject("standardTripsFound", tripController.getStandardTrips(allTrips));
-        modelAndView.setViewName("tripsFound");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/selectedTripFromMainPage", method = RequestMethod.POST)
-    public ModelAndView selectedTripFromMainPage(@ModelAttribute("idTrip") Long idTrip) {
-        System.out.println("TripFormController.selectedTripFromMainPage | idTrip = " + idTrip);
-        //TODO Add to model and view object of selected trip and show it on setTripDetails with locked the fields of airports.
+    @RequestMapping(value = "/genTrip", method = RequestMethod.GET)
+    public ModelAndView getTrip() {
+        tripGenerator.generateTrip();
         return fillBasicForm();
     }
 
-    @RequestMapping(value = "/selectedTrip", method = RequestMethod.POST)
-    public ModelAndView selectedTrip(
-            @ModelAttribute("idTrip") Long idTrip,
-            @ModelAttribute("source") String source
-    ) {
-        System.out.println("TripFormController.selectedTrip | source = " + source);
-
-        if (source.contains("mainPage")) {
-            return selectedTripFromMainPage(idTrip);
-        } else {
-            System.out.println("TripFormController.selectedTrip | idTrip = " + idTrip);
-            return fillBasicForm();
-        }
-    }
-
     public List<Country> getCountryByContinent(Long idContinent) {
-        return tripController.getCountryByContinent(idContinent);
+        return countryController.getCountryByContinent(idContinent);
     }
 
     public Country getCountry(Long idCountry) {
-        return tripController.getCountry(idCountry);
+        return countryController.getCountry(idCountry);
     }
 
     public List<Airport> getAirportsFromCountry(Long idCountry) {
-        return tripController.getAirportsFromCountry(idCountry);
+        return airportController.getAirportsFromCountry(idCountry);
     }
 
     public List<TripAvailable> getAllPromotedTripsFromCountry(Long idCountry) {
-        return tripController.getAllPromotedTripsFromCountry(idCountry);
+        return tripAvailableController.getAllPromotedTripsFromCountry(idCountry);
     }
 
-    private void checkCorrectnessOdTheDate(
+    public List<TripAvailable> getAllStandardTripsLastMinuteFromCountry(Long idCountry) {
+        return tripAvailableController.getAllStandardTripsLastMinuteFromCountry(idCountry);
+    }
+
+    private void checkCorrectnessOfTheDate(
             @ModelAttribute("fromDate") String fromDate,
             @ModelAttribute("toDate") String toDate,
             ModelAndView modelAndView) {

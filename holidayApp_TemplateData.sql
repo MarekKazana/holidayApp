@@ -118,7 +118,7 @@ INSERT INTO `hotel`(`name`, `rating`, `id_city`, `id_airport`, `address`, `img_u
 ("Hotel Sv. Kriz", 3, 30, 21, "Cesta Domovinske Zahvalnosti 1", "http://www.putnickaagencijaklek.hr/wp-content/uploads/2018/01/hotel-sveti-kriz2_6229.jpg");
 -- Trogir / Airport: Split
 INSERT INTO `hotel`(`name`, `rating`, `id_city`, `id_airport`, `address`, `img_url`) VALUES 
-("Brown Beach House", 4, 29, 21, "Put Gradine 66", "https://q-xx.bstatic.com/xdata/images/hotel/max500/122855328.jpg");
+("Brown Beach House", 4, 29, 21, "Put Gradine 66", "https://brownhotels.com/croatia/sites/default/files/styles/gallery_thumb/public/croatia/the_hotel_brown_beach_house_croatia_80.jpg");
 -- Dubrovnik / Airport: Dubrovnik
 INSERT INTO `hotel`(`name`, `rating`, `id_city`, `id_airport`, `address`, `img_url`) VALUES 
 ("Hilton Imperial", 5, 25, 22, "Ul. Marijana Blažića 2", "https://croatia.hr/sites/default/files/styles/image_full_width/public/2017-09/deluxim.jpg");
